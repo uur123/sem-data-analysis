@@ -6,10 +6,7 @@ import altair as alt
 import pickle
 from pathlib import Path
 
-st.set_page_config(page_title= "Aspex Data",
-                    page_icon = ":bar_chart:",
-                    layout = "wide"
-)
+st.set_page_config(page_title= "Aspex Data", page_icon = ":microscope:", layout = "wide")
 
 
 st.header(" Aspex data analysis web-app ")
