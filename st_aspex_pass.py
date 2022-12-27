@@ -10,7 +10,7 @@ st.set_page_config(
     page_title= "Aspex Data", 
     page_icon = ":microscope:",
     layout = "wide",
-    manu_items = {
+    menu_items = {
         'About': "# Just a qucik way to  extract *information* from the EDX measurement"
     })
 
