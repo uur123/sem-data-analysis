@@ -5,6 +5,10 @@ import pandas as pd
 import altair as alt
 import pickle
 from pathlib import Path
+from wordcloud import WordCloud
+from wordcloud import ImageColorGenerator
+from wordcloud import STOPWORDS
+import matplotlib.pyplot as plt
 
 st.set_page_config(
     page_title= "Aspex Data", 
@@ -14,7 +18,7 @@ st.set_page_config(
         'About': "# Just a qucik way to  extract *information* from the EDX measurement"
     })
 
-
+st.set_option('deprecation.showPyplotGlobalUse', False)
 st.header(" Aspex data analysis web-app ")
 
 # --- USER Authenticator ---
@@ -39,6 +43,18 @@ if authentication_status:
 
     authenticator.logout("Logout", 'main')
     uploaded_files = st.file_uploader("Drag and drop Excel files here", type=["xlsx"], accept_multiple_files=True)
+    
+    data = pd.read_csv('words.csv')
+
+    text = " ".join(i for i in data)
+    stopwords = set(STOPWORDS)
+    wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
+    plt.figure( figsize=(15,10))
+    plt.axis("off")
+    plt.imshow(wordcloud, interpolation='bilinear')
+    fig = plt.show()
+    st.pyplot()
+    
     # If a file is selected, read it into a DataFrame and count the pores
     if uploaded_files:
         result_data=[]
