@@ -202,4 +202,13 @@ if authentication_status:
                                   'Deviation (mm)' : std.measurement.round(decimals=4)})
         df_grain_size = pd.DataFrame(table_list)
         new_df_grain_size = df_grain_size.T
-        st.table(new_df_grain_size)
+        st.table(df_grain_size)
+
+        chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
+            x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
+            y= 'Grain size (mm)')
+
+        st.caption('Comparison of the Grain size measurement distribution')
+        st.altair_chart(chart_grains, use_container_width=True)
+
+
