@@ -11,7 +11,7 @@ from wordcloud import STOPWORDS
 import matplotlib.pyplot as plt
 
 st.set_page_config(
-    page_title= "Aspex Data", 
+    page_title= "ENlab Data", 
     page_icon = ":microscope:",
     layout = "wide",
     menu_items = {
@@ -19,7 +19,7 @@ st.set_page_config(
     })
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
-st.header(" Aspex data analysis web-app ")
+st.header(" ENLab data analysis web-app ")
 
 # --- USER Authenticator ---
 names = ['enlabor']
@@ -43,7 +43,9 @@ if authentication_status:
 
     authenticator.logout("Logout", 'main')
     uploaded_files = st.file_uploader("Drag and drop Excel files here", type=["xlsx"], accept_multiple_files=True)
-    
+    uploaded_files_csv = st.file_uploader("Drag and drop Grain Size files here", type=["csv"], accept_multiple_files=True)
+
+
     data = pd.read_csv('words.csv')
 
     text = " ".join(i for i in data)
@@ -184,4 +186,20 @@ if authentication_status:
         st.altair_chart(chart_other, use_container_width=True)
 
 
-
+    if uploaded_files_csv:
+        table_list=[]
+        for filename in uploaded_files_csv:
+            if filename is not None:
+                # Read the CSV file into a DataFrame
+                df1 = pd.read_csv(filename, index_col=0, skiprows=1)
+                df_value= df1.drop(['Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3'], axis=1)
+                df_value=df_value.rename(columns={'Unnamed: 4':'measurement'})
+                mean_size = df_value.mean()
+                std = df_value.std()
+                #deviation = f'{std} mm'
+                table_list.append({'Sample name' : filename.name,
+                                  'Grain size (mm)' : mean_size.measurement.round(decimals=3),
+                                  'Deviation (mm)' : std.measurement.round(decimals=4)})
+        df_grain_size = pd.DataFrame(table_list)
+        new_df_grain_size = df_grain_size.T
+        st.table(new_df_grain_size)
