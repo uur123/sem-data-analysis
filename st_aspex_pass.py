@@ -156,7 +156,20 @@ if authentication_status:
         df_result = pd.DataFrame(result_data)
         new_df = df_result.T
         st.table(new_df)
+
+        @st.cache
+        def convert_df(df):
+            return df.to_csv().encode('utf-8')
         
+        csv = convert_df(new_df)
+        st.download_button(
+            "Press to Download",
+            csv,
+            "aspex_data.csv",
+            "text/csv",
+            key='browser-data'
+        )
+
         st.markdown("Histogram graphs for data visualization 📊")
         #st.write(df_result.columns)
         #st.table(df.plot.bar(x="File name", y="Total pores", rot=0))
@@ -203,6 +216,15 @@ if authentication_status:
         df_grain_size = pd.DataFrame(table_list)
         new_df_grain_size = df_grain_size.T
         st.table(df_grain_size)
+
+        csv1 = convert_df(df_grain_size)
+        st.download_button(
+            "Press to Download",
+            csv1,
+            "grain_size.csv",
+            "text/csv",
+            key='browser-data'
+        )
 
         chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
             x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
