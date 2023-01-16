@@ -212,3 +212,31 @@ if authentication_status:
         st.altair_chart(chart_grains, use_container_width=True)
 
 
+footer="""<style>
+a:link , a:visited{
+color: blue;
+background-color: transparent;
+text-decoration: underline;
+}
+
+a:hover,  a:active {
+color: red;
+background-color: transparent;
+text-decoration: underline;
+}
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: white;
+color: black;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed by <a style='display: block; text-align: center;' href="https://www.linkedin.com/in/ugurkayran/" target="_blank">Ugur Kayran</a></p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)
