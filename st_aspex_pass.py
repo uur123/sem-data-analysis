@@ -42,8 +42,8 @@ if authentication_status == None:
 if authentication_status:
 
     authenticator.logout("Logout", 'main')
-    uploaded_files = st.file_uploader("Drag and drop Excel files here", type=["xlsx"], accept_multiple_files=True)
-    uploaded_files_csv = st.file_uploader("Drag and drop Grain Size files here", type=["csv"], accept_multiple_files=True)
+    uploaded_files = st.file_uploader("Drag and drop the Aspex data files here, Excel", type=["xlsx"], accept_multiple_files=True)
+    uploaded_files_csv = st.file_uploader("Drag and drop Grain Size files here, csv", type=["csv"], accept_multiple_files=True)
 
 
     data = pd.read_csv('words.csv')
