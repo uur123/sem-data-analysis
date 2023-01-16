@@ -239,4 +239,4 @@ text-align: center;
 <p>Developed by <a style='display: block; text-align: center;' href="https://www.linkedin.com/in/ugurkayran/" target="_blank">Ugur Kayran</a></p>
 </div>
 """
-st.markdown(footer,unsafe_allow_html=True)
+st.markdown(footer,unsafe_allow_html=False)
