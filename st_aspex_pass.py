@@ -5,9 +5,9 @@ import pandas as pd
 import altair as alt
 import pickle
 from pathlib import Path
-from wordcloud import WordCloud
-from wordcloud import ImageColorGenerator
-from wordcloud import STOPWORDS
+#from wordcloud import WordCloud
+#from wordcloud import ImageColorGenerator
+#from wordcloud import STOPWORDS
 import matplotlib.pyplot as plt
 
 st.set_page_config(
@@ -46,16 +46,16 @@ if authentication_status:
     uploaded_files_csv = st.file_uploader("Drag and drop Grain Size files here, csv", type=["csv"], accept_multiple_files=True)
 
 
-    data = pd.read_csv('words.csv')
+    #data = pd.read_csv('words.csv')
 
-    text = " ".join(i for i in data)
-    stopwords = set(STOPWORDS)
-    wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
-    plt.figure( figsize=(15,10))
-    plt.axis("off")
-    plt.imshow(wordcloud, interpolation='bilinear')
-    fig = plt.show()
-    st.pyplot()
+    #text = " ".join(i for i in data)
+    #stopwords = set(STOPWORDS)
+    #wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
+    #plt.figure( figsize=(15,10))
+    #plt.axis("off")
+    #plt.imshow(wordcloud, interpolation='bilinear')
+    #fig = plt.show()
+    #st.pyplot()
     
     # If a file is selected, read it into a DataFrame and count the pores
     if uploaded_files:
