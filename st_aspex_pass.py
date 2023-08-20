@@ -155,13 +155,15 @@ if authentication_status:
                                     "Other Inclusions( <75um )": total_other_75,})
         df_result = pd.DataFrame(result_data)
         new_df = df_result.T
-        st.table(new_df)
+        df_sorted = new_df.sort_values(by=new_df.index[0], ascending=True, axis=1)
+        
+        st.table(df_sorted)
 
         @st.cache
         def convert_df(df):
             return df.to_csv().encode('utf-8')
         
-        csv = convert_df(new_df)
+        csv = convert_df(df_sorted)
         st.download_button(
             "Press to Download",
             csv,
