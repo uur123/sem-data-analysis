@@ -66,7 +66,7 @@ if authentication_status:
             if file is not None:
                 # Read the Excel file into a DataFrame
                 #df = pd.read_excel(file, skiprows=1)
-                df = pd.read_csv(file, skiprows=1)   #test
+                df = pd.read_csv(file)   #test
                 
                 
                 # High Al content at the detected impurities indicates the presence of pores
