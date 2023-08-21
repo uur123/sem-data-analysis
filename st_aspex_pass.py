@@ -42,7 +42,9 @@ if authentication_status == None:
 if authentication_status:
 
     authenticator.logout("Logout", 'main')
-    uploaded_files = st.file_uploader("Drag and drop the Aspex data files here, Excel", type=["xlsx"], accept_multiple_files=True)
+    #uploaded_files = st.file_uploader("Drag and drop the Aspex data files here, Excel", type=["xlsx"], accept_multiple_files=True)
+    uploaded_files_csv = st.file_uploader("Drag and drop the Aspex data files here, Excel", type=["csv"], accept_multiple_files=True)  #test
+    
     uploaded_files_csv = st.file_uploader("Drag and drop Grain Size files here, csv", type=["csv"], accept_multiple_files=True)
 
 
@@ -63,7 +65,10 @@ if authentication_status:
         for file in uploaded_files:
             if file is not None:
                 # Read the Excel file into a DataFrame
-                df = pd.read_excel(file, skiprows=1)
+                #df = pd.read_excel(file, skiprows=1)
+                df = pd._csv(file, skiprows=1)   #test
+                
+                
                 # High Al content at the detected impurities indicates the presence of pores
                 # Count the pores in the range 0.5 to 15um
                 df_al75_05_15 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
