@@ -208,9 +208,9 @@ if authentication_status:
         st.altair_chart(chart_other, use_container_width=True)
     
     # for the pxz data
-    if uploaded_files:
+    if uploaded_files1:
         result_data1=[]
-        for file in uploaded_files:
+        for file in uploaded_files1:
             if file is not None:
                 # Read the Excel file into a DataFrame
                 #df = pd.read_excel(file, skiprows=1)
