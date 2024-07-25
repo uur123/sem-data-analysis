@@ -45,7 +45,7 @@ if authentication_status:
     #uploaded_files = st.file_uploader("Drag and drop the Aspex data files here, Excel", type=["xlsx"], accept_multiple_files=True)
     uploaded_files = st.file_uploader("Drag and drop the Aspex data files here, csv", type=["csv"], accept_multiple_files=True)  #test
 
-    uploaded_files1 = st.file_uploader("Drag and drop the Aspex data files here, pxz", type=["csv"], accept_multiple_files=True)  #test
+    uploaded_files1 = st.file_uploader("Drag and drop the Aspex data files here, pxz", type=["pxz"], accept_multiple_files=True)  #test
     
     uploaded_files_csv = st.file_uploader("Drag and drop Grain Size files here, csv", type=["csv"], accept_multiple_files=True)
 
