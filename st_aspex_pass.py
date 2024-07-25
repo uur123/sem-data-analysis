@@ -359,7 +359,7 @@ if authentication_status:
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total Oxides',)
     
-        chart_other = alt.Chart(df_result)1.mark_bar().encode(
+        chart_other = alt.Chart(df_result1).mark_bar().encode(
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total Other Inclusions')
 
