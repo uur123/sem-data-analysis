@@ -226,7 +226,7 @@ if authentication_status:
 
         csv1 = convert_df(df_grain_size)
         st.download_button(
-            "Press to Download",
+            "Press to Download Kim!!",
             csv1,
             "grain_size.csv",
             "text/csv",
