@@ -353,26 +353,26 @@ if authentication_status:
         #st.table(ax)
 
     
-        chart_pores = alt.Chart(df_result1).mark_bar().encode(
+        chart_pores1 = alt.Chart(df_result1).mark_bar().encode(
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total pores')
         
-        chart_oxides = alt.Chart(df_result1).mark_bar().encode(
+        chart_oxides1 = alt.Chart(df_result1).mark_bar().encode(
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total Oxides',)
     
-        chart_other = alt.Chart(df_result1).mark_bar().encode(
+        chart_other1 = alt.Chart(df_result1).mark_bar().encode(
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total Other Inclusions')
 
         st.caption('Comparison of the total pores')
-        st.altair_chart(chart_pores, use_container_width=True)
+        st.altair_chart(chart_pores1, use_container_width=True)
 
         st.caption('Comparison of the Total Oxides')
-        st.altair_chart(chart_oxides, use_container_width=True)
+        st.altair_chart(chart_oxides1, use_container_width=True)
 
         st.caption('Comparison of the Total Other Inclusions')
-        st.altair_chart(chart_other, use_container_width=True)
+        st.altair_chart(chart_other1, use_container_width=True)
 
 
     if uploaded_files_csv:
