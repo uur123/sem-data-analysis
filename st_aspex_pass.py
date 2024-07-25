@@ -343,7 +343,7 @@ if authentication_status:
             csv,
             "aspex_data.csv",
             "text/csv",
-            key='browser-data'
+            key='browser-data2'
         )
 
         st.markdown("Histogram graphs for data visualization 📊")
@@ -399,7 +399,7 @@ if authentication_status:
             csv1,
             "grain_size.csv",
             "text/csv",
-            key='browser-data'
+            key='browser-data3'
         )
 
         chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
