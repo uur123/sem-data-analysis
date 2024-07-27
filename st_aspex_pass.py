@@ -9,6 +9,7 @@ from pathlib import Path
 #from wordcloud import ImageColorGenerator
 #from wordcloud import STOPWORDS
 import matplotlib.pyplot as plt
+import numpy as np
 
 st.set_page_config(
     page_title= "ENlab Data", 
