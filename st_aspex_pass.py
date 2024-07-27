@@ -49,6 +49,8 @@ if authentication_status:
     
     uploaded_files_csv = st.file_uploader("Drag and drop Grain Size files here, csv", type=["csv"], accept_multiple_files=True)
 
+    uploaded_files_csv_axioscope = st.file_uploader("Drag and drop Grain Size files here_Axioscope, csv", type=["csv"], accept_multiple_files=True)
+
 
     #data = pd.read_csv('words.csv')
 
@@ -425,9 +427,57 @@ if authentication_status:
             x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
             y= 'Grain size (mm)')
 
-        st.caption('Comparison of the Grain size measurement distribution')
+        st.caption('Comparison of the Grain size measurement distribution_ Axiovision data')
         st.altair_chart(chart_grains, use_container_width=True)
 
+
+    if uploaded_files_csv_axioscope:
+        table_list4=[]
+        for filename in uploaded_files_csv_axioscope:
+            if filename is not None:
+                # Read the CSV file into a DataFrame
+                df1 = pd.read_csv(filename, index_col=0, skiprows=1, sep=';', decimal=',')
+                df_value= df1.drop(['Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3'], axis=1)
+                df_value=df_value.rename(columns={'Unnamed: 4':'measurement'})
+                mean_size = df_value.mean()
+                std = df_value.std()
+
+                #corrected data 
+                data = df_value['measurement'].values
+                cleaned_data = remove_extremes(data, 5)
+
+                mean_cleaned = np.mean(cleaned_data)
+                std_cleaned = np.std(cleaned_data)
+                max_value = np.max(cleaned_data)
+                min_value = np.min(cleaned_data)
+                
+                #deviation = f'{std} mm'
+                table_list4.append({ 'Sample name' : filename.name,
+                                    'Grain size (mm)' : mean_size.measurement.round(decimals=3),
+                                    'Deviation (mm)' : std.measurement.round(decimals=4),
+                                    'Corrected_Grain size (mm)' : mean_cleaned.round(decimals=3),
+                                    'Corrected_Standard Deviation (mm)' : std_cleaned.round(decimals=4),
+                                    'Max value': max_value,
+                                    'Min value': min_value})
+        df_grain_size = pd.DataFrame(table_list4)
+        new_df_grain_size = df_grain_size.T
+        st.table(df_grain_size)
+
+        csv1 = convert_df(df_grain_size)
+        st.download_button(
+            "Press to Download",
+            csv1,
+            "grain_size.csv",
+            "text/csv",
+            key='browser-data4'
+        )
+
+        chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
+            x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
+            y= 'Grain size (mm)')
+
+        st.caption('Comparison of the Grain size measurement distribution_ Axioscope data')
+        st.altair_chart(chart_grains, use_container_width=True)
 
 footer="""<style>
 a:link , a:visited{
