@@ -482,13 +482,13 @@ if authentication_status:
             key='browser-data4'
         )
 
-        st.caption('measured data')
+        #st.caption('measured data')
         chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
             x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
             y='Grain size (μm)',
             yError='Deviation (μm)'
 
-        st.caption('Ccorrected data')
+        #st.caption('Ccorrected data')
         chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
             x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
             y='Corrected_Grain size (μm)',
