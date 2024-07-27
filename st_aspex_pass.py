@@ -438,8 +438,8 @@ if authentication_status:
             if filename is not None:
                 # Read the CSV file into a DataFrame
                 df1 = pd.read_csv(filename, index_col=0, skiprows=1, sep=';', decimal=',')
-                df_value= df1.drop(['Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3'], axis=1)
-                df_value=df_value.rename(columns={'Unnamed: 4':'measurement'})
+                df_value= df1.drop(['Unnamed: 1', 'Unnamed: 3', 'Unnamed: 4'], axis=1)
+                df_value=df_value.rename(columns={'Unnamed: 2':'measurement'})
                 mean_size = df_value.mean()
                 std = df_value.std()
 
