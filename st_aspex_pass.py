@@ -405,15 +405,19 @@ if authentication_status:
                 
                 #deviation = f'{std} mm'
                 table_list.append({ 'Sample name' : filename.name,
-                                    'Grain size (mm)' : mean_size.measurement.round(decimals=3),
-                                    'Deviation (mm)' : std.measurement.round(decimals=4),
-                                    'Corrected_Grain size (mm)' : mean_cleaned.round(decimals=3),
-                                    'Corrected_Standard Deviation (mm)' : std_cleaned.round(decimals=4),
+                                    'Grain size (μm)' : mean_size.measurement.round(decimals=3),
+                                    'Deviation (μm)' : std.measurement.round(decimals=4),
+                                    'Corrected_Grain size (μm)' : mean_cleaned.round(decimals=3),
+                                    'Corrected_Standard Deviation (μm)' : std_cleaned.round(decimals=4),
                                     'Max value': max_value,
                                     'Min value': min_value})
         df_grain_size = pd.DataFrame(table_list)
         new_df_grain_size = df_grain_size.T
         st.table(df_grain_size)
+
+        @st.cache
+        def convert_df(df):
+            return df.to_csv().encode('utf-8')
 
         csv1 = convert_df(df_grain_size)
         st.download_button(
@@ -454,15 +458,19 @@ if authentication_status:
                 
                 #deviation = f'{std} mm'
                 table_list4.append({ 'Sample name' : filename.name,
-                                    'Grain size (mm)' : mean_size.measurement.round(decimals=3),
-                                    'Deviation (mm)' : std.measurement.round(decimals=4),
-                                    'Corrected_Grain size (mm)' : mean_cleaned.round(decimals=3),
-                                    'Corrected_Standard Deviation (mm)' : std_cleaned.round(decimals=4),
+                                    'Grain size (μm)' : mean_size.measurement.round(decimals=3),
+                                    'Deviation (μm)' : std.measurement.round(decimals=4),
+                                    'Corrected_Grain size (μm)' : mean_cleaned.round(decimals=3),
+                                    'Corrected_Standard Deviation (μm)' : std_cleaned.round(decimals=4),
                                     'Max value': max_value,
                                     'Min value': min_value})
         df_grain_size = pd.DataFrame(table_list4)
         new_df_grain_size = df_grain_size.T
         st.table(df_grain_size)
+
+        @st.cache
+        def convert_df(df):
+            return df.to_csv().encode('utf-8')
 
         csv1 = convert_df(df_grain_size)
         st.download_button(
