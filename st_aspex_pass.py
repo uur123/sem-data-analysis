@@ -484,14 +484,14 @@ if authentication_status:
 
         st.caption('measured data')
         chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
-            x=('Sample name', axis=alt.Axis(labelAngle= 0)),
-            y=alt.Y('Grain size (μm)'),
+            x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
+            y='Grain size (μm)',
             yError='Deviation (μm)'
 
         st.caption('Ccorrected data')
         chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
-            x=('Sample name', axis=alt.Axis(labelAngle= 0)),
-            y=alt.Y('Corrected_Grain size (μm)'),
+            x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
+            y='Corrected_Grain size (μm)',
             yError='Corrected_Standard Deviation (μm)'
 
         st.caption('Comparison of the Grain size measurement distribution_ Axioscope data')
