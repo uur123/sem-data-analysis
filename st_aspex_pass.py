@@ -403,7 +403,8 @@ if authentication_status:
                 #deviation = f'{std} mm'
                 table_list.append({ 'Sample name' : filename.name,
                                     'Grain size (mm)' : mean_size.measurement.round(decimals=3),
-                                    'Deviation (mm)' : std.measurement.round(decimals=4)},'Corrected_Grain size (mm)' : mean_cleaned.round(decimals=3),
+                                    'Deviation (mm)' : std.measurement.round(decimals=4),
+                                    'Corrected_Grain size (mm)' : mean_cleaned.round(decimals=3),
                                     'Corrected_Standard Deviation (mm)' : std_cleaned.round(decimals=4),
                                     'Max value': max_value,
                                     'Min value': min_value})
