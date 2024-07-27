@@ -483,10 +483,10 @@ if authentication_status:
         )
 
         #st.caption('measured data')
-        chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
-            x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
-            y='Grain size (μm)',
-            yError='Deviation (μm)'
+        #chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
+         #   x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
+          #  y='Grain size (μm)',
+           # yError='Deviation (μm)'
 
         #st.caption('Ccorrected data')
         chart_grains2 = alt.Chart(df_grain_size).mark_bar().encode(
