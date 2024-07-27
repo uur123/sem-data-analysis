@@ -375,6 +375,11 @@ if authentication_status:
         st.altair_chart(chart_other1, use_container_width=True)
 
 
+    def remove_extremes(data, n):
+        sorted_data = np.sort(data)
+        return sorted_data[n:-n]
+
+    
     if uploaded_files_csv:
         table_list=[]
         for filename in uploaded_files_csv:
@@ -385,10 +390,23 @@ if authentication_status:
                 df_value=df_value.rename(columns={'Unnamed: 4':'measurement'})
                 mean_size = df_value.mean()
                 std = df_value.std()
+
+                #corrected data 
+                data = df_value['measurement'].values
+                cleaned_data = remove_extremes(data, 5)
+
+                mean_cleaned = np.mean(cleaned_data)
+                std_cleaned = np.std(cleaned_data)
+                max_value = np.max(cleaned_data)
+                min_value = np.min(cleaned_data)
+                
                 #deviation = f'{std} mm'
-                table_list.append({'Sample name' : filename.name,
-                                  'Grain size (mm)' : mean_size.measurement.round(decimals=3),
-                                  'Deviation (mm)' : std.measurement.round(decimals=4)})
+                table_list.append({ 'Sample name' : filename.name,
+                                    'Grain size (mm)' : mean_size.measurement.round(decimals=3),
+                                    'Deviation (mm)' : std.measurement.round(decimals=4)},'Corrected_Grain size (mm)' : mean_cleaned.round(decimals=3),
+                                    'Corrected_Standard Deviation (mm)' : std_cleaned.round(decimals=4),
+                                    'Max value': max_value,
+                                    'Min value': min_value})
         df_grain_size = pd.DataFrame(table_list)
         new_df_grain_size = df_grain_size.T
         st.table(df_grain_size)
