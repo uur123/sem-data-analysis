@@ -489,7 +489,7 @@ if authentication_status:
             yError='Deviation (μm)'
 
         #st.caption('Ccorrected data')
-        chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
+        chart_grains2 = alt.Chart(df_grain_size).mark_bar().encode(
             x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
             y='Corrected_Grain size (μm)',
             yError='Corrected_Standard Deviation (μm)'
