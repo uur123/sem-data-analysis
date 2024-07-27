@@ -482,20 +482,23 @@ if authentication_status:
             key='browser-data4'
         )
 
-        st.caption('measured data')
+        
         chart_grains = alt.Chart(df_grain_size).mark_bar().encode(
             x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
             y='Grain size (μm)',
             yError='Deviation (μm)')
 
-        st.caption('Ccorrected data')
+        
         chart_grains2 = alt.Chart(df_grain_size).mark_bar().encode(
             x=alt.X('Sample name', axis=alt.Axis(labelAngle= 0)),
             y='Corrected_Grain size (μm)',
             yError='Corrected_Standard Deviation (μm)')
 
-        st.caption('Comparison of the Grain size measurement distribution_ Axioscope data')
+        st.caption('Measured data')
         st.altair_chart(chart_grains, use_container_width=True)
+
+        st.caption('Corrected data')
+        st.altair_chart(chart_grains2, use_container_width=True)
 
 footer="""<style>
 a:link , a:visited{
