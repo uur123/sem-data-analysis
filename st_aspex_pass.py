@@ -404,7 +404,7 @@ if authentication_status:
                 min_value = np.min(cleaned_data)
                 
                 #deviation = f'{std} mm'
-                table_list.append({ 'Sample name' : filename.name,
+                table_list.append({ 'Sample name' : filename.name[:-4],
                                     'Grain size (μm)' : mean_size.measurement.round(decimals=3),
                                     'Deviation (μm)' : std.measurement.round(decimals=4),
                                     'Corrected_Grain size (μm)' : mean_cleaned.round(decimals=3),
@@ -460,7 +460,7 @@ if authentication_status:
                 min_value = np.min(cleaned_data)
                 
                 #deviation = f'{std} mm'
-                table_list4.append({ 'Sample name' : filename.name[:-3],
+                table_list4.append({ 'Sample name' : filename.name[:-4],
                                     'Grain size (μm)' : mean_size.measurement.round(decimals=3),
                                     'Deviation (μm)' : std.measurement.round(decimals=4),
                                     'Corrected_Grain size (μm)' : mean_cleaned.round(decimals=3),
