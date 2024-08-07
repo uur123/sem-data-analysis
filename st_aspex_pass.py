@@ -410,7 +410,9 @@ if authentication_status:
                                     'Corrected_Grain size (μm)' : mean_cleaned.round(decimals=3),
                                     'Corrected_Standard Deviation (μm)' : std_cleaned.round(decimals=4),
                                     'Max value': max_value,
-                                    'Min value': min_value})
+                                    'Max - Corrected average': max_value - mean_cleaned.round(decimals=3),
+                                    'Min value': min_value,
+                                    '|Min - Corrected average|':mean_cleaned.round(decimals=3) - min_value})
         df_grain_size = pd.DataFrame(table_list)
         new_df_grain_size = df_grain_size.T
         st.table(df_grain_size)
