@@ -395,76 +395,76 @@ if authentication_status:
                 
                 # High Al content at the detected impurities indicates the presence of pores
                 # Count the pores in the range 0.5 to 15um
-                df_al75_05_15 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_al50si5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_al75_05_15 = df[(df['Classification']=='Al 75') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_al50si5_05_15 = df[(df['Classification']=='Al 50 Si 5') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
                 total_05_15 = len(df_al75_05_15) + len(df_al50si5_05_15)
                 
                 # 15 to 30um
-                df_al75_15_30 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 15) & (df['DAVE'] < 30.0)]
-                df_al50si5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 15) & (df['DAVE'] < 30.0)]
+                df_al75_15_30 = df[(df['Classification']=='Al 75') & (df["DAve(μm)"] >= 15) & (df['DAve(μm)'] < 30.0)]
+                df_al50si5_15_30 = df[(df['Classification']=='Al 50 Si 5') & (df["DAve(μm)"] >= 15) & (df['DAve(μm)'] < 30.0)]
                 total_15_30= len(df_al75_15_30) + len(df_al50si5_15_30)
                 # 30 to 75um
-                df_al75_30_75 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
-                df_al50si5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                df_al75_30_75 = df[(df['Classification']=='Al 75') & (df["DAve(μm)"] >= 30) & (df['DAve(μm)'] < 75.0)]
+                df_al50si5_30_75 = df[(df['Classification']=='Al 50 Si 5') & (df["DAve(μm)"] >= 30) & (df['DAve(μm)'] < 75.0)]
                 total_30_75= len(df_al75_30_75) + len(df_al50si5_30_75)
                 # <75um
-                df_al75_75 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 75)]
-                df_al50si5_75 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 75)]
+                df_al75_75 = df[(df['Classification']=='Al 75') & (df["DAve(μm)"] >= 75)]
+                df_al50si5_75 = df[(df['Classification']=='Al 50 Si 5') & (df["DAve(μm)"] >= 75)]
                 total_75= len(df_al75_75) + len(df_al50si5_75)
                 #-------- Presence of Metal Oxides at the detected impurities indicates the total Al Oxides ------
                 # 0.5 to 15
-                df_Al50Fe5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_Al50O5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_Al50Cu5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_Al50Mn5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_Al50Fe5_05_15 = df[(df['Classification']=='Al 50 Fe 5') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_Al50O5_05_15 = df[(df['Classification']=='Al 50 Oth 5') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_Al50Cu5_05_15 = df[(df['Classification']=='Al 50 Cu 5') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_Al50Mn5_05_15 = df[(df['Classification']=='Al 50 Mn 5') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
                 total_AlO_05_15 = len(df_Al50Fe5_05_15) + len(df_Al50O5_05_15) + len(df_Al50Cu5_05_15) + len(df_Al50Mn5_05_15)
                 
                 # 15 to 30um
-                df_Al50Fe5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
-                df_Al50O5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
-                df_Al50Cu5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
-                df_Al50Mn5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_Al50Fe5_15_30 = df[(df['Classification']=='Al 50 Fe 5') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
+                df_Al50O5_15_30 = df[(df['Classification']=='Al 50 Oth 5') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
+                df_Al50Cu5_15_30 = df[(df['Classification']=='Al 50 Cu 5') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
+                df_Al50Mn5_15_30 = df[(df['Classification']=='Al 50 Mn 5') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
                 total_AlO_15_30 = len(df_Al50Fe5_15_30) + len(df_Al50O5_15_30) + len(df_Al50Cu5_15_30) + len(df_Al50Mn5_15_30)
                 # 30 to 75um
-                df_Al50Fe5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
-                df_Al50O5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
-                df_Al50Cu5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
-                df_Al50Mn5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                df_Al50Fe5_30_75 = df[(df['Classification']=='Al 50 Fe 5') & (df["DAve(μm)"] >= 30) & (df['DAve(μm)'] < 75.0)]
+                df_Al50O5_30_75 = df[(df['Classification']=='Al 50 Oth 5') & (df["DAve(μm)"] >= 30) & (df['DAve(μm)'] < 75.0)]
+                df_Al50Cu5_30_75 = df[(df['Classification']=='Al 50 Cu 5') & (df["DAve(μm)"] >= 30) & (df['DAve(μm)'] < 75.0)]
+                df_Al50Mn5_30_75 = df[(df['Classification']=='Al 50 Mn 5') & (df["DAve(μm)"] >= 30) & (df['DAve(μm)'] < 75.0)]
                 total_AlO_30_75 = len(df_Al50Fe5_30_75) + len(df_Al50O5_30_75) + len(df_Al50Cu5_30_75) + len(df_Al50Mn5_30_75)
                 # <75um
-                df_Al50Fe5_75 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 75)]
-                df_Al50O5_75 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 75)]
-                df_Al50Cu5_75 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 75)]
-                df_Al50Mn5_75 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 75)]
+                df_Al50Fe5_75 = df[(df['Classification']=='Al 50 Fe 5') & (df["DAve(μm)"] >= 75)]
+                df_Al50O5_75 = df[(df['Classification']=='Al 50 Oth 5') & (df["DAve(μm)"] >= 75)]
+                df_Al50Cu5_75 = df[(df['Classification']=='Al 50 Cu 5') & (df["DAve(μm)"] >= 75)]
+                df_Al50Mn5_75 = df[(df['Classification']=='Al 50 Mn 5') & (df["DAve(μm)"] >= 75)]
                 total_AlO_75 = len(df_Al50Fe5_75) + len(df_Al50O5_75) + len(df_Al50Cu5_75) + len(df_Al50Mn5_75)
                 #--------- The Other inclusions ---------
                 # 0.5 to 15
-                df_MgO10_05_15 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_NaCl_05_15 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_CuSi10_05_15 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_SiMnFe10_05_15 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
-                df_Cu10_05_15 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_MgO10_05_15 = df[(df['Classification']=='MgO 10') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_NaCl_05_15 = df[(df['Classification']=='NaCl 10') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_CuSi10_05_15 = df[(df['Classification']=='Cu Si 10') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_SiMnFe10_05_15 = df[(df['Classification']=='Si Mn Fe 10') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
+                df_Cu10_05_15 = df[(df['Classification']=='Cu 10') & (df["DAve(μm)"] >= 0.5) & (df['DAve(μm)'] < 15.0)]
                 total_other_05_15 = len(df_MgO10_05_15) + len(df_NaCl_05_15) + len(df_CuSi10_05_15) + len(df_SiMnFe10_05_15) + len(df_Cu10_05_15)
                 #15 to 30
-                df_MgO10_15_30 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
-                df_NaCl_15_30 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
-                df_CuSi10_15_30 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
-                df_SiMnFe10_15_30 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
-                df_Cu10_15_30 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_MgO10_15_30 = df[(df['Classification']=='MgO 10') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
+                df_NaCl_15_30 = df[(df['Classification']=='NaCl 10') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
+                df_CuSi10_15_30 = df[(df['Classification']=='Cu Si 10') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
+                df_SiMnFe10_15_30 = df[(df['Classification']=='Si Mn Fe 10') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
+                df_Cu10_15_30 = df[(df['Classification']=='Cu 10') & (df["DAve(μm)"] >= 15.0) & (df['DAve(μm)'] < 30.0)]
                 total_other_15_30 = len(df_MgO10_15_30) + len(df_NaCl_15_30) + len(df_CuSi10_15_30) + len(df_SiMnFe10_15_30) + len(df_Cu10_15_30)
                 # 30 to 75
-                df_MgO10_30_75 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
-                df_NaCl_30_75 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
-                df_CuSi10_30_75 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
-                df_SiMnFe10_30_75 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
-                df_Cu10_30_75 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
+                df_MgO10_30_75 = df[(df['Classification']=='MgO 10') & (df["DAve(μm)"] >= 30.0) & (df['DAve(μm)'] < 75.0)]
+                df_NaCl_30_75 = df[(df['Classification']=='NaCl 10') & (df["DAve(μm)"] >= 30.0) & (df['DAve(μm)'] < 75.0)]
+                df_CuSi10_30_75 = df[(df['Classification']=='Cu Si 10') & (df["DAve(μm)"] >= 30.0) & (df['DAve(μm)'] < 75.0)]
+                df_SiMnFe10_30_75 = df[(df['Classification']=='Si Mn Fe 10') & (df["DAve(μm)"] >= 30.0) & (df['DAVE'] < 75.0)]
+                df_Cu10_30_75 = df[(df['Classification']=='Cu 10') & (df["DAve(μm)"] >= 30.0) & (df['DAve(μm)'] < 75.0)]
                 total_other_30_75 = len(df_MgO10_30_75) + len(df_NaCl_30_75) + len(df_CuSi10_30_75) + len(df_SiMnFe10_30_75) + len(df_Cu10_30_75)
                 # >75
-                df_MgO10_75 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 75)]
-                df_NaCl_75 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 75.0)]
-                df_CuSi10_75 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 75.0)]
-                df_SiMnFe10_75 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 75.0)]
-                df_Cu10_75 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 75.0)]
+                df_MgO10_75 = df[(df['Classification']=='MgO 10') & (df["DAve(μm)"] >= 75)]
+                df_NaCl_75 = df[(df['Classification']=='NaCl 10') & (df["DAve(μm)"] >= 75.0)]
+                df_CuSi10_75 = df[(df['Classification']=='Cu Si 10') & (df["DAve(μm)"] >= 75.0)]
+                df_SiMnFe10_75 = df[(df['Classification']=='Si Mn Fe 10') & (df["DAve(μm)"] >= 75.0)]
+                df_Cu10_75 = df[(df['Classification']=='Cu 10') & (df["DAve(μm)"] >= 75.0)]
                 total_other_75 = len(df_MgO10_75) + len(df_NaCl_75) + len(df_CuSi10_75) + len(df_SiMnFe10_75) + len(df_Cu10_75)
                 result_data.append({"File name": file.name,
                                     "Total pores": total_05_15 + total_15_30 + total_30_75 + total_75,
