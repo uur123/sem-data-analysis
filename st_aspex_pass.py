@@ -52,6 +52,8 @@ if authentication_status:
 
     uploaded_files_csv_axioscope = st.file_uploader("Drag and drop Grain Size files here_Axioscope, csv", type=["csv"], accept_multiple_files=True)
 
+    uploaded_files_csv_phenom = st.file_uploader("Drag and drop the Phenom csv data here, csv only", type=["csv"], accept_multiple_files=True)
+
 
     #data = pd.read_csv('words.csv')
 
@@ -377,7 +379,157 @@ if authentication_status:
         st.caption('Comparison of the Total Other Inclusions')
         st.altair_chart(chart_other1, use_container_width=True)
 
+    # If a file is selected, read it into a DataFrame and count the pores
+   
+    # Data from Phenom
+    
+    if uploaded_files_csv_phenom:
+        result_data=[]
+        for file in uploaded_files_csv_phenom:
+            if file is not None:
+                # Read the Excel file into a DataFrame
+                #df = pd.read_excel(file, skiprows=1)
+                df = pd.read_csv(file)   #test
+                df.columns = df.columns.str.replace('\r\n', '', regex=True)
+                
+                
+                # High Al content at the detected impurities indicates the presence of pores
+                # Count the pores in the range 0.5 to 15um
+                df_al75_05_15 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_al50si5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                total_05_15 = len(df_al75_05_15) + len(df_al50si5_05_15)
+                
+                # 15 to 30um
+                df_al75_15_30 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 15) & (df['DAVE'] < 30.0)]
+                df_al50si5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 15) & (df['DAVE'] < 30.0)]
+                total_15_30= len(df_al75_15_30) + len(df_al50si5_15_30)
+                # 30 to 75um
+                df_al75_30_75 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                df_al50si5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                total_30_75= len(df_al75_30_75) + len(df_al50si5_30_75)
+                # <75um
+                df_al75_75 = df[(df['PSEM_CLASS']=='Al 75') & (df["DAVE"] >= 75)]
+                df_al50si5_75 = df[(df['PSEM_CLASS']=='Al 50 Si 5') & (df["DAVE"] >= 75)]
+                total_75= len(df_al75_75) + len(df_al50si5_75)
+                #-------- Presence of Metal Oxides at the detected impurities indicates the total Al Oxides ------
+                # 0.5 to 15
+                df_Al50Fe5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_Al50O5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_Al50Cu5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_Al50Mn5_05_15 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                total_AlO_05_15 = len(df_Al50Fe5_05_15) + len(df_Al50O5_05_15) + len(df_Al50Cu5_05_15) + len(df_Al50Mn5_05_15)
+                
+                # 15 to 30um
+                df_Al50Fe5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_Al50O5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_Al50Cu5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_Al50Mn5_15_30 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                total_AlO_15_30 = len(df_Al50Fe5_15_30) + len(df_Al50O5_15_30) + len(df_Al50Cu5_15_30) + len(df_Al50Mn5_15_30)
+                # 30 to 75um
+                df_Al50Fe5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                df_Al50O5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                df_Al50Cu5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                df_Al50Mn5_30_75 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 30) & (df['DAVE'] < 75.0)]
+                total_AlO_30_75 = len(df_Al50Fe5_30_75) + len(df_Al50O5_30_75) + len(df_Al50Cu5_30_75) + len(df_Al50Mn5_30_75)
+                # <75um
+                df_Al50Fe5_75 = df[(df['PSEM_CLASS']=='Al 50 Fe 5') & (df["DAVE"] >= 75)]
+                df_Al50O5_75 = df[(df['PSEM_CLASS']=='Al 50 Oth 5') & (df["DAVE"] >= 75)]
+                df_Al50Cu5_75 = df[(df['PSEM_CLASS']=='Al 50 Cu 5') & (df["DAVE"] >= 75)]
+                df_Al50Mn5_75 = df[(df['PSEM_CLASS']=='Al 50 Mn 5') & (df["DAVE"] >= 75)]
+                total_AlO_75 = len(df_Al50Fe5_75) + len(df_Al50O5_75) + len(df_Al50Cu5_75) + len(df_Al50Mn5_75)
+                #--------- The Other inclusions ---------
+                # 0.5 to 15
+                df_MgO10_05_15 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_NaCl_05_15 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_CuSi10_05_15 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_SiMnFe10_05_15 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                df_Cu10_05_15 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 0.5) & (df['DAVE'] < 15.0)]
+                total_other_05_15 = len(df_MgO10_05_15) + len(df_NaCl_05_15) + len(df_CuSi10_05_15) + len(df_SiMnFe10_05_15) + len(df_Cu10_05_15)
+                #15 to 30
+                df_MgO10_15_30 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_NaCl_15_30 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_CuSi10_15_30 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_SiMnFe10_15_30 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                df_Cu10_15_30 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 15.0) & (df['DAVE'] < 30.0)]
+                total_other_15_30 = len(df_MgO10_15_30) + len(df_NaCl_15_30) + len(df_CuSi10_15_30) + len(df_SiMnFe10_15_30) + len(df_Cu10_15_30)
+                # 30 to 75
+                df_MgO10_30_75 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
+                df_NaCl_30_75 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
+                df_CuSi10_30_75 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
+                df_SiMnFe10_30_75 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
+                df_Cu10_30_75 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 30.0) & (df['DAVE'] < 75.0)]
+                total_other_30_75 = len(df_MgO10_30_75) + len(df_NaCl_30_75) + len(df_CuSi10_30_75) + len(df_SiMnFe10_30_75) + len(df_Cu10_30_75)
+                # >75
+                df_MgO10_75 = df[(df['PSEM_CLASS']=='MgO 10') & (df["DAVE"] >= 75)]
+                df_NaCl_75 = df[(df['PSEM_CLASS']=='NaCl 10') & (df["DAVE"] >= 75.0)]
+                df_CuSi10_75 = df[(df['PSEM_CLASS']=='Cu Si 10') & (df["DAVE"] >= 75.0)]
+                df_SiMnFe10_75 = df[(df['PSEM_CLASS']=='Si Mn Fe 10') & (df["DAVE"] >= 75.0)]
+                df_Cu10_75 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 75.0)]
+                total_other_75 = len(df_MgO10_75) + len(df_NaCl_75) + len(df_CuSi10_75) + len(df_SiMnFe10_75) + len(df_Cu10_75)
+                result_data.append({"File name": file.name,
+                                    "Total pores": total_05_15 + total_15_30 + total_30_75 + total_75,
+                                    "Number of Pores (0.5 to 15um)": total_05_15,
+                                    "Number of Pores (15 to 30um)": total_15_30,
+                                    "Number of Pores (30 to 75um)": total_30_75,
+                                    "Number of Pores ( <75um )": total_75,
+                                    "Total Oxides": total_AlO_05_15 + total_AlO_15_30 + total_AlO_30_75 + total_AlO_75,
+                                    "Oxides (0.5 to 15um)": total_AlO_05_15,
+                                    "Oxides (15 to 30um)": total_AlO_15_30,
+                                    "Oxides (30 to 75um)": total_AlO_30_75,
+                                    "Oxides( <75um )": total_AlO_75,
+                                    "Total Other Inclusions": total_other_05_15 + total_other_15_30 + total_other_30_75 + total_other_75,
+                                    "Other Inclusions (0.5 to 15um)": total_other_05_15,
+                                    "Other Inclusions(15 to 30um)": total_other_15_30,
+                                    "Other Inclusions (30 to 75um)": total_other_30_75,
+                                    "Other Inclusions( <75um )": total_other_75,})
+        df_result = pd.DataFrame(result_data)
+        new_df = df_result.T
+        df_sorted = new_df.sort_values(by=new_df.index[0], ascending=True, axis=1)
+        
+        st.table(df_sorted)
 
+        @st.cache
+        def convert_df(df):
+            return df.to_csv().encode('utf-8')
+        
+        csv = convert_df(df_sorted)
+        st.download_button(
+            "Press to Download",
+            csv,
+            "aspex_data.csv",
+            "text/csv",
+            key='browser-data'
+        )
+
+        st.markdown("Histogram graphs for data visualization 📊")
+        #st.write(df_result.columns)
+        #st.table(df.plot.bar(x="File name", y="Total pores", rot=0))
+        #ax = df.plot.bar(x="File name", y="Total pores", rot=0)
+        #st.table(ax)
+
+    
+        chart_pores = alt.Chart(df_result).mark_bar().encode(
+            x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
+            y='Total pores')
+        
+        chart_oxides = alt.Chart(df_result).mark_bar().encode(
+            x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
+            y='Total Oxides',)
+    
+        chart_other = alt.Chart(df_result).mark_bar().encode(
+            x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
+            y='Total Other Inclusions')
+
+        st.caption('Comparison of the total pores')
+        st.altair_chart(chart_pores, use_container_width=True)
+
+        st.caption('Comparison of the Total Oxides')
+        st.altair_chart(chart_oxides, use_container_width=True)
+
+        st.caption('Comparison of the Total Other Inclusions')
+        st.altair_chart(chart_other, use_container_width=True)
+
+    
     def remove_extremes(data, n):
         sorted_data = np.sort(data)
         return sorted_data[n:-n]
