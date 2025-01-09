@@ -466,7 +466,7 @@ if authentication_status:
                 df_Cu10_75 = df[(df['Classification'] == 'Cu10') & (df['DAve(μm)'] >= 75.0)]
                 total_other_75 = len(df_MgO10_75) + len(df_NaCl_75) + len(df_CuSi10_75) + len(df_SiMnFe10_75) + len(df_Cu10_75)
 
-               result_data2.append({"File name": file.name,
+                result_data2.append({"File name": file.name,
                                     "Total pores": total_05_15 + total_15_30 + total_30_75 + total_75,
                                     "Number of Pores (0.5 to 15um)": total_05_15,
                                     "Number of Pores (15 to 30um)": total_15_30,
