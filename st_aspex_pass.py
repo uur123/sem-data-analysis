@@ -493,7 +493,7 @@ if authentication_status:
         def convert_df(df):
             return df.to_csv().encode('utf-8')
         
-        csv = convert_df(df_sorted)
+        csv = convert_df(df_sorted2)
         st.download_button(
             "Press to Download",
             csv,
@@ -503,21 +503,21 @@ if authentication_status:
         )
 
         st.markdown("Histogram graphs for data visualization 📊")
-        #st.write(df_result.columns)
+        #st.write(df_result2.columns)
         #st.table(df.plot.bar(x="File name", y="Total pores", rot=0))
         #ax = df.plot.bar(x="File name", y="Total pores", rot=0)
         #st.table(ax)
 
     
-        chart_pores = alt.Chart(df_result).mark_bar().encode(
+        chart_pores = alt.Chart(df_result2).mark_bar().encode(
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total pores')
         
-        chart_oxides = alt.Chart(df_result).mark_bar().encode(
+        chart_oxides = alt.Chart(df_result2).mark_bar().encode(
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total Oxides',)
     
-        chart_other = alt.Chart(df_result).mark_bar().encode(
+        chart_other = alt.Chart(df_result2).mark_bar().encode(
             x=alt.X('File name', axis=alt.Axis(labelAngle= 0)),
             y='Total Other Inclusions')
 
