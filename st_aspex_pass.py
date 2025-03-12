@@ -151,7 +151,7 @@ if authentication_status:
                 total_other_75 = len(df_MgO10_75) + len(df_NaCl_75) + len(df_CuSi10_75) + len(df_SiMnFe10_75) + len(df_Cu10_75)
                 inclusion_index = df['AREA'].sum()/100.44/10
                 result_data.append({"File name": file.name,
-                                    "Total features": len(total_05_15 + total_15_30 + total_30_75 + total_75+ total_AlO_05_15 + total_AlO_15_30 + total_AlO_30_75 + total_AlO_75+total_other_05_15 + total_other_15_30 + total_other_30_75 + total_other_75),
+                                    "Total features": len(total_05_15) + len(total_15_30) + len(total_30_75) + len(total_75)+ len(total_AlO_05_15) + len(total_AlO_15_30) + len(total_AlO_30_75) + len(total_AlO_75) + len(total_other_05_15) + len(total_other_15_30) + len(total_other_30_75) + len(total_other_75)),
                                     "Total pores": total_05_15 + total_15_30 + total_30_75 + total_75,
                                     "Number of Pores (0.5 to 15um)": total_05_15,
                                     "Number of Pores (15 to 30um)": total_15_30,
