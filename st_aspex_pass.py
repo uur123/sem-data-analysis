@@ -152,6 +152,7 @@ if authentication_status:
                 inclusion_index = df['AREA'].sum()/100.44/10
                 result_data.append({"File name": file.name,
                                     "Total features": total_05_15 + (total_15_30) + (total_30_75) + (total_75)+ (total_AlO_05_15) + (total_AlO_15_30) + (total_AlO_30_75) + (total_AlO_75) + (total_other_05_15) + (total_other_15_30) + (total_other_30_75) + (total_other_75),
+                                    "Inclusion index" : inclusion_index
                                     "Total pores": total_05_15 + total_15_30 + total_30_75 + total_75,
                                     "Number of Pores (0.5 to 15um)": total_05_15,
                                     "Number of Pores (15 to 30um)": total_15_30,
