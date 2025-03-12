@@ -154,17 +154,17 @@ if authentication_status:
                                     "Number of Pores (0.5 to 15um)": total_05_15,
                                     "Number of Pores (15 to 30um)": total_15_30,
                                     "Number of Pores (30 to 75um)": total_30_75,
-                                    "Number of Pores ( <75um )": total_75,
+                                    "Number of Pores ( >75um )": total_75,
                                     "Total Oxides": total_AlO_05_15 + total_AlO_15_30 + total_AlO_30_75 + total_AlO_75,
                                     "Oxides (0.5 to 15um)": total_AlO_05_15,
                                     "Oxides (15 to 30um)": total_AlO_15_30,
                                     "Oxides (30 to 75um)": total_AlO_30_75,
-                                    "Oxides( <75um )": total_AlO_75,
+                                    "Oxides( >75um )": total_AlO_75,
                                     "Total Other Inclusions": total_other_05_15 + total_other_15_30 + total_other_30_75 + total_other_75,
                                     "Other Inclusions (0.5 to 15um)": total_other_05_15,
                                     "Other Inclusions(15 to 30um)": total_other_15_30,
                                     "Other Inclusions (30 to 75um)": total_other_30_75,
-                                    "Other Inclusions( <75um )": total_other_75,})
+                                    "Other Inclusions( >75um )": total_other_75,})
         df_result = pd.DataFrame(result_data)
         new_df = df_result.T
         df_sorted = new_df.sort_values(by=new_df.index[0], ascending=True, axis=1)
@@ -321,17 +321,17 @@ if authentication_status:
                                     "Number of Pores (0.5 to 15um)": total_05_15,
                                     "Number of Pores (15 to 30um)": total_15_30,
                                     "Number of Pores (30 to 75um)": total_30_75,
-                                    "Number of Pores ( <75um )": total_75,
+                                    "Number of Pores ( >75um )": total_75,
                                     "Total Oxides": total_AlO_05_15 + total_AlO_15_30 + total_AlO_30_75 + total_AlO_75,
                                     "Oxides (0.5 to 15um)": total_AlO_05_15,
                                     "Oxides (15 to 30um)": total_AlO_15_30,
                                     "Oxides (30 to 75um)": total_AlO_30_75,
-                                    "Oxides( <75um )": total_AlO_75,
+                                    "Oxides( >75um )": total_AlO_75,
                                     "Total Other Inclusions": total_other_05_15 + total_other_15_30 + total_other_30_75 + total_other_75,
                                     "Other Inclusions (0.5 to 15um)": total_other_05_15,
                                     "Other Inclusions(15 to 30um)": total_other_15_30,
                                     "Other Inclusions (30 to 75um)": total_other_30_75,
-                                    "Other Inclusions( <75um )": total_other_75,})
+                                    "Other Inclusions( >75um )": total_other_75,})
         df_result1 = pd.DataFrame(result_data1)
         new_df1 = df_result1.T
         df_sorted1 = new_df1.sort_values(by=new_df1.index[0], ascending=True, axis=1)
@@ -471,17 +471,17 @@ if authentication_status:
                                     "Number of Pores (0.5 to 15um)": total_05_15,
                                     "Number of Pores (15 to 30um)": total_15_30,
                                     "Number of Pores (30 to 75um)": total_30_75,
-                                    "Number of Pores ( <75um )": total_75,
+                                    "Number of Pores ( >75um )": total_75,
                                     "Total Oxides": total_AlO_05_15 + total_AlO_15_30 + total_AlO_30_75 + total_AlO_75,
                                     "Oxides (0.5 to 15um)": total_AlO_05_15,
                                     "Oxides (15 to 30um)": total_AlO_15_30,
                                     "Oxides (30 to 75um)": total_AlO_30_75,
-                                    "Oxides( <75um )": total_AlO_75,
+                                    "Oxides( >75um )": total_AlO_75,
                                     "Total Other Inclusions": total_other_05_15 + total_other_15_30 + total_other_30_75 + total_other_75,
                                     "Other Inclusions (0.5 to 15um)": total_other_05_15,
                                     "Other Inclusions(15 to 30um)": total_other_15_30,
                                     "Other Inclusions (30 to 75um)": total_other_30_75,
-                                    "Other Inclusions( <75um )": total_other_75,})
+                                    "Other Inclusions( >75um )": total_other_75,})
         df_result2 = pd.DataFrame(result_data2)
         new_df2 = df_result2.T
         df_sorted2= new_df2.sort_values(by=new_df2.index[0], ascending=True, axis=1)
