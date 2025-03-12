@@ -150,9 +150,12 @@ if authentication_status:
                 df_Cu10_75 = df[(df['PSEM_CLASS']=='Cu 10') & (df["DAVE"] >= 75.0)]
                 total_other_75 = len(df_MgO10_75) + len(df_NaCl_75) + len(df_CuSi10_75) + len(df_SiMnFe10_75) + len(df_Cu10_75)
                 inclusion_index = df['AREA'].sum()/100.44/10
+                area_sqrt_min = math.sqrt(df['AREA'].min())
+                area_sqrt_max = math.sqrt(df['AREA'].max())
                 result_data.append({"File name": file.name,
                                     "Total features": total_05_15 + (total_15_30) + (total_30_75) + (total_75)+ (total_AlO_05_15) + (total_AlO_15_30) + (total_AlO_30_75) + (total_AlO_75) + (total_other_05_15) + (total_other_15_30) + (total_other_30_75) + (total_other_75),
                                     "Inclusion index" : "%.2f" %inclusion_index ,
+                                    "Extrema of AREA" : f"{area_sqrt_min:.2f}, {area_sqrt_max:.2f}"
                                     "Total pores": total_05_15 + total_15_30 + total_30_75 + total_75,
                                     "Number of Pores (0.5 to 15um)": total_05_15,
                                     "Number of Pores (15 to 30um)": total_15_30,
