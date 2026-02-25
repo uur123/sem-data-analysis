@@ -234,7 +234,7 @@ if authentication_status:
     'F', 'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'K', 'Ca', 'Mn', 'Fe', 'Ni', 'Cu']
 
 
-                df = pd.read_csv(file, names=fields, header=None, delim_whitespace=True)   #test
+                df = pd.read_csv(file, names=fields, header=None, sep=r'\s+', engine='python')   #test
                 df['PSEM_CLASS'] = df['PSEM_CLASS'].replace(9, 'Al 50 Oth 5')
                 df['PSEM_CLASS'] = df['PSEM_CLASS'].replace(0, '{Unclassified}')
                 df['PSEM_CLASS'] = df['PSEM_CLASS'].replace(1, 'NaCl 10')
