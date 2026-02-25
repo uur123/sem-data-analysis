@@ -9,3 +9,6 @@ secondaryBackgroundColor = "#0083B8"
 textColor = "#FFF"
 
 font = "sans serif"
+
+[serialization]
+dataFrameSerialization = "legacy"
