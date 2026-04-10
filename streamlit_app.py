@@ -1,13 +1,14 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="ENLab Inclusion Analysis", layout="wide")
-st.header("ENLab Aspex Inclusion Analysis")
+st.set_page_config(page_title="ENLab Analysis", layout="wide")
+st.header("ENLab Inclusion Analysis Report")
 
 uploaded_files = st.file_uploader("Upload Aspex files", type=["csv", "pxz"], accept_multiple_files=True)
 
 if uploaded_files:
-    result_data = []
+    # We will collect data in a dictionary where keys are Filenames
+    report_dict = {}
     
     fields = [
         'PART#', 'FIELD#', 'MAGFIELD#', 'X_ABS', 'Y_ABS', 'X_CG', 'Y_CG', 'X_FERET','Y_FERET', 
@@ -29,52 +30,48 @@ if uploaded_files:
         }
         df['PSEM_CLASS'] = df['PSEM_CLASS'].replace(mapping)
 
-        # Helper to get size counts
-        def get_sizes(data, classes):
-            subset = data[data['PSEM_CLASS'].isin(classes)]
-            return [
-                len(subset[subset['DAVE'].between(5, 14.99)]),
-                len(subset[subset['DAVE'].between(15, 29.99)]),
-                len(subset[subset['DAVE'].between(30, 74.99)]),
-                len(subset[subset['DAVE'] >= 75])
-            ]
+        def get_metrics(data, classes):
+            sub = data[data['PSEM_CLASS'].isin(classes)]
+            m5_15 = len(sub[sub['DAVE'].between(5, 14.99)])
+            m15_30 = len(sub[sub['DAVE'].between(15, 29.99)])
+            m30_75 = len(sub[sub['DAVE'].between(30, 74.99)])
+            m75 = len(sub[sub['DAVE'] >= 75])
+            return [m5_15 + m15_30 + m30_75 + m75, m5_15, m15_30, m30_75, m75]
 
-        # Categorize
-        pores = get_sizes(df, ['Al 75', 'Al 50 Si 5'])
-        oxides = get_sizes(df, ['Al 50 Fe 5', 'Al 50 Oth 5', 'Al 50 Cu 5', 'Al 50 Mn 5'])
-        others = get_sizes(df, ['MgO 10', 'NaCl 10', 'Cu Si 10', 'Si Mn Fe 10', 'Cu 10'])
+        p = get_metrics(df, ['Al 75', 'Al 50 Si 5'])
+        o = get_metrics(df, ['Al 50 Fe 5', 'Al 50 Oth 5', 'Al 50 Cu 5', 'Al 50 Mn 5'])
+        i = get_metrics(df, ['MgO 10', 'NaCl 10', 'Cu Si 10', 'Si Mn Fe 10', 'Cu 10'])
 
-        result_data.append({
-            "File": file.name,
-            "P_5_15": pores[0], "P_15_30": pores[1], "P_30_75": pores[2], "P_GT75": pores[3],
-            "O_5_15": oxides[0], "O_15_30": oxides[1], "O_30_75": oxides[2], "O_GT75": oxides[3],
-            "I_5_15": others[0], "I_15_30": others[1], "I_30_75": others[2], "I_GT75": others[3]
-        })
+        # Store in dictionary with specific row names
+        report_dict[file.name] = [
+            p[0], p[1], p[2], p[3], p[4],
+            o[0], o[1], o[2], o[3], o[4],
+            i[0], i[1], i[2], i[3], i[4]
+        ]
 
-    if result_data:
-        full_df = pd.DataFrame(result_data)
-        
-        # --- 1. PORES GRAPH ---
-        st.subheader("Graph 1: Pores Size Distribution")
-        pore_df = full_df[["File", "P_5_15", "P_15_30", "P_30_75", "P_GT75"]].set_index("File")
-        pore_df.columns = ["5-15µm", "15-30µm", "30-75µm", ">75µm"]
-        st.bar_chart(pore_df)
+    # --- CREATE THE TRANSPOSED TABLE ---
+    row_names = [
+        "Total pores", "Number of Pores (5 to 15um)", "Number of Pores (15 to 30um)", "Number of Pores (30 to 75um)", "Number of Pores (>75um)",
+        "Total Oxides", "Oxides (5 to 15um)", "Oxides (15 to 30um)", "Oxides (30 to 75um)", "Oxides (>75um)",
+        "Total Other Inclusions", "Other Inclusions (5 to 15um)", "Other Inclusions (15 to 30um)", "Other Inclusions (30 to 75um)", "Other Inclusions (>75um)"
+    ]
+    
+    final_table = pd.DataFrame(report_dict, index=row_names)
+    st.write("### Summary Report Table")
+    st.table(final_table) # Using st.table for the static "printed" look
 
-        # --- 2. OXIDES GRAPH ---
-        st.subheader("Graph 2: Oxides Size Distribution")
-        oxide_df = full_df[["File", "O_5_15", "O_15_30", "O_30_75", "O_GT75"]].set_index("File")
-        oxide_df.columns = ["5-15µm", "15-30µm", "30-75µm", ">75µm"]
-        st.bar_chart(oxide_df)
+    # --- 3 GRAPHS ---
+    # Convert dictionary back to a format easy for plotting
+    plot_df = final_table.T.reset_index().rename(columns={'index': 'File'})
 
-        # --- 3. OTHER INCLUSIONS GRAPH ---
-        st.subheader("Graph 3: Other Inclusions Size Distribution")
-        other_df = full_df[["File", "I_5_15", "I_15_30", "I_30_75", "I_GT75"]].set_index("File")
-        other_df.columns = ["5-15µm", "15-30µm", "30-75µm", ">75µm"]
-        st.bar_chart(other_df)
+    st.subheader("Graph 1: Pores Size Distribution")
+    st.bar_chart(plot_df.set_index("File")[row_names[1:5]])
 
-        # Summary Table
-        st.write("### Raw Data Summary")
-        st.dataframe(full_df)
+    st.subheader("Graph 2: Oxides Size Distribution")
+    st.bar_chart(plot_df.set_index("File")[row_names[6:10]])
+
+    st.subheader("Graph 3: Other Inclusions Size Distribution")
+    st.bar_chart(plot_df.set_index("File")[row_names[11:15]])
 
 else:
-    st.info("Upload files to generate graphs.")
+    st.info("Please upload your Aspex files.")
