@@ -52,12 +52,6 @@ authenticator = stauth.Authenticate(
     cookie_expiry_days=30
 )
 
-
-# Handle login
-# The modern way: just specify the location as a keyword
-authenticator.login(location='main') 
-
-
 # 57. Call login (using a keyword for the location)
 authenticator.login(location='main')
 
