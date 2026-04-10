@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="ENLab Data Analysis", layout="wide")
-st.header("ENLab Aspex Data Analysis")
+st.header("ENLab Aspex Data Analysis (by Size)")
 
 uploaded_files = st.file_uploader("Upload files", type=["csv", "pxz"], accept_multiple_files=True)
 
@@ -19,7 +19,7 @@ if uploaded_files:
     ]
 
     for file in uploaded_files:
-        # FIX: Changed 'delim_whitespace=True' to 'sep=r"\s+"' for modern pandas
+        # Read file with space separator
         df = pd.read_csv(file, names=fields, header=None, sep=r"\s+", engine='python')
         
         # Mapping numeric codes to Class Names
@@ -33,27 +33,42 @@ if uploaded_files:
         }
         df['PSEM_CLASS'] = df['PSEM_CLASS'].replace(mapping)
 
-        # --- FILTRATION LOGIC ---
+        # DEFINE CLASSES
         pore_classes = ['Al 75', 'Al 50 Si 5']
-        total_pores = len(df[df['PSEM_CLASS'].isin(pore_classes)])
-
         oxide_classes = ['Al 50 Fe 5', 'Al 50 Oth 5', 'Al 50 Cu 5', 'Al 50 Mn 5']
-        total_oxides = len(df[df['PSEM_CLASS'].isin(oxide_classes)])
 
-        other_classes = ['MgO 10', 'NaCl 10', 'Cu Si 10', 'Si Mn Fe 10', 'Cu 10']
-        total_others = len(df[df['PSEM_CLASS'].isin(other_classes)])
+        # FILTRATION LOGIC BY SIZE (DAVE)
+        def count_by_size(data, classes):
+            return {
+                "5-15µm":  len(data[data['PSEM_CLASS'].isin(classes) & (data['DAVE'].between(5, 14.99))]),
+                "15-30µm": len(data[data['PSEM_CLASS'].isin(classes) & (data['DAVE'].between(15, 29.99))]),
+                "30-75µm": len(data[data['PSEM_CLASS'].isin(classes) & (data['DAVE'].between(30, 74.99))]),
+                ">75µm":   len(data[data['PSEM_CLASS'].isin(classes) & (data['DAVE'] >= 75)])
+            }
+
+        pore_sizes = count_by_size(df, pore_classes)
+        oxide_sizes = count_by_size(df, oxide_classes)
 
         result_data.append({
-            "File name": file.name,
-            "Total Pores": total_pores,
-            "Total Oxides": total_oxides,
-            "Total Others": total_others
+            "File": file.name,
+            "Pores (5-15)": pore_sizes["5-15µm"],
+            "Pores (15-30)": pore_sizes["15-30µm"],
+            "Pores (30-75)": pore_sizes["30-75µm"],
+            "Pores (>75)": pore_sizes[">75µm"],
+            "Oxides (5-15)": oxide_sizes["5-15µm"],
+            "Oxides (15-30)": oxide_sizes["15-30µm"],
+            "Oxides (30-75)": oxide_sizes["30-75µm"],
+            "Oxides (>75)": oxide_sizes[">75µm"]
         })
 
     if result_data:
         summary_df = pd.DataFrame(result_data)
-        st.write("### Analysis Results")
+        st.write("### Detailed Size Summary")
         st.dataframe(summary_df)
         
-        st.write("### Inclusion Comparison Graph")
-        st.bar_chart(summary_df.set_index("File name"))
+        st.write("### Size Distribution Graph")
+        # Plotting the data - Streamlit will group bars automatically
+        st.bar_chart(summary_df.set_index("File"))
+
+else:
+    st.info("Upload your Aspex files to generate the size-separated report.")
