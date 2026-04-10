@@ -54,7 +54,9 @@ authenticator = stauth.Authenticate(
 
 
 # Handle login
-name, authentication_status, username = authenticator.login('Login', 'main')
+# The modern way: just specify the location as a keyword
+authenticator.login(location='main') 
+
 
 if authentication_status is False:
     st.error("Username or Password is incorrect")
