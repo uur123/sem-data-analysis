@@ -58,12 +58,21 @@ authenticator = stauth.Authenticate(
 authenticator.login(location='main') 
 
 
-if authentication_status is False:
+# 57. Call login (using a keyword for the location)
+authenticator.login(location='main')
+
+# 59. Access the status from session_state instead of a local variable
+if st.session_state["authentication_status"] is False:
     st.error("Username or Password is incorrect")
-elif authentication_status is None:
+elif st.session_state["authentication_status"] is None:
     st.warning("Please enter your user name and password")
-elif authentication_status:
-    authenticator.logout("Logout", 'main')
+elif st.session_state["authentication_status"]:
+    # 64. Use session_state to get the user's name for the logout button
+    authenticator.logout("Logout", location='main')
+    st.write(f'Welcome *{st.session_state["name"]}*')
+    
+    # Rest of your app (File Uploaders, etc.)
+
 
     # --- FILE UPLOADERS ---
     uploaded_files = st.file_uploader("Drag and drop the Aspex data files here, csv", type=["csv"], accept_multiple_files=True)
