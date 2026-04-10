@@ -17,7 +17,7 @@ st.set_page_config(
         'About': "# Just a quick way to extract *information* from the EDX measurement"
     })
 
-st.set_option('deprecation.showPyplotGlobalUse', False)
+#st.set_option('deprecation.showPyplotGlobalUse', False)
 st.header(" ENLab data analysis web-app ")
 
 # --- HELPER FOR CACHING PYARROW OBJECTS ---
