@@ -35,9 +35,9 @@ with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
 authenticator = stauth.Authenticate(
-    names, 
-    usernames, 
-    hashed_passwords,
+    names=names, 
+    usernames=usernames, 
+    passwords=hashed_passwords,
     cookie_name='lab',
     key = 'abc',
     cookie_expiry_days=15
