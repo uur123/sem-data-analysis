@@ -1,64 +1,71 @@
 import streamlit as st
 import pandas as pd
 
-# --- PAGE CONFIG ---
 st.set_page_config(page_title="ENLab Data Analysis", layout="wide")
-st.header("ENLab PXZ/CSV Data Analysis")
+st.header("ENLab Aspex Data Analysis")
 
-# --- FILE UPLOADER ---
-uploaded_files = st.file_uploader("Upload PXZ or CSV files", type=["pxz", "csv"], accept_multiple_files=True)
+uploaded_files = st.file_uploader("Upload files", type=["csv", "pxz"], accept_multiple_files=True)
 
 if uploaded_files:
     result_data = []
     
+    # Define the columns based on your logic
+    fields = [
+        'PART#', 'FIELD#', 'MAGFIELD#', 'X_ABS', 'Y_ABS', 'X_CG', 'Y_CG', 'X_FERET','Y_FERET', 
+        'DAVE', 'DMAX', 'DMIN', 'DPERP', 'ASPECT', 'AREA', 'PERIMETER','ORIENTATION', 'MAG', 
+        'MAG_INDEX', 'ACTION', 'FIRST_ELEM', 'SECOND_ELEM', 'THIRD_ELEM', 'FOURTH_ELEM', 
+        'FIRST_CONC', 'SECOND_CONC', 'THIRD_CONC', 'FOURTH_CONC', 'FIRST_PCT', 'SECOND_PCT', 
+        'THIRD_PCT', 'FOURTH_PCT', 'VIDEO', 'LIVE_TIME', 'COUNTS', 'TYPE(4ET)#', 'DENSITY', 
+        'PSEM_CLASS', 'F', 'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'K', 'Ca', 'Mn', 'Fe', 'Ni', 'Cu'
+    ]
+
     for file in uploaded_files:
-        # Read the file
-        df = pd.read_csv(file)
+        # Read using whitespace delimiter as per your logic
+        df = pd.read_csv(file, names=fields, header=None, delim_whitespace=True)
         
-        # Data cleaning: ensure all object columns are strings (fixes LargeUtf8 errors)
-        for col in df.columns:
-            if pd.api.types.is_object_dtype(df[col]):
-                df[col] = df[col].astype(str)
+        # Mapping numeric codes to Class Names
+        mapping = {
+            10: 'Al 75', 7: 'Al 50 Si 5',            # Pores
+            5: 'Al 50 Fe 5', 9: 'Al 50 Oth 5',      # Oxides
+            6: 'Al 50 Cu 5', 4: 'Al 50 Mn 5',       # Oxides
+            11: 'MgO 10', 1: 'NaCl 10',             # Others
+            2: 'Cu Si 10', 8: 'Si Mn Fe 10', 3: 'Cu 10', # Others
+            0: '{Unclassified}', 12: '{Unclassified}'
+        }
+        df['PSEM_CLASS'] = df['PSEM_CLASS'].replace(mapping)
 
         # --- FILTRATION LOGIC ---
-        # 1. Pores (Al 75 and Al 50 Si 5)
-        total_pores = len(df[df['PSEM_CLASS'].isin(['Al 75', 'Al 50 Si 5'])])
-        
-        # 2. Oxides (Specific Al 50 classes)
-        oxide_classes = ['Al 50 Fe 5', 'Al 50 Oth 5', 'Al 50 Cu 5', 'Al 50 Mn 5']
-        total_oxides = len(df[df['PSEM_CLASS'].isin(oxide_classes)])
-        
-        # 3. Others (MgO, NaCl, etc.)
-        other_classes = ['MgO 10', 'NaCl 10', 'Cu Si 10', 'Si Mn Fe 10', 'Cu 10']
-        total_others = len(df[df['PSEM_CLASS'].isin(other_classes)])
+        # Pores
+        pore_classes = ['Al 75', 'Al 50 Si 5']
+        total_05_15 = len(df[df['PSEM_CLASS'].isin(pore_classes) & (df["DAVE"].between(0.5, 14.99))])
+        total_15_30 = len(df[df['PSEM_CLASS'].isin(pore_classes) & (df["DAVE"].between(15, 29.99))])
+        total_30_75 = len(df[df['PSEM_CLASS'].isin(pore_classes) & (df["DAVE"].between(30, 74.99))])
+        total_75    = len(df[df['PSEM_CLASS'].isin(pore_classes) & (df["DAVE"] >= 75)])
 
-        # Store Results in a simple dictionary
+        # Oxides
+        oxide_classes = ['Al 50 Fe 5', 'Al 50 Oth 5', 'Al 50 Cu 5', 'Al 50 Mn 5']
+        total_AlO_05_15 = len(df[df['PSEM_CLASS'].isin(oxide_classes) & (df["DAVE"].between(0.5, 14.99))])
+        total_AlO_15_30 = len(df[df['PSEM_CLASS'].isin(oxide_classes) & (df["DAVE"].between(15, 29.99))])
+        total_AlO_30_75 = len(df[df['PSEM_CLASS'].isin(oxide_classes) & (df["DAVE"].between(30, 74.99))])
+        total_AlO_75    = len(df[df['PSEM_CLASS'].isin(oxide_classes) & (df["DAVE"] >= 75)])
+
+        # Others
+        other_classes = ['MgO 10', 'NaCl 10', 'Cu Si 10', 'Si Mn Fe 10', 'Cu 10']
+        total_other_count = len(df[df['PSEM_CLASS'].isin(other_classes)])
+
         result_data.append({
             "File name": file.name,
-            "Total Pores": total_pores,
-            "Total Oxides": total_oxides,
-            "Total Others": total_others
+            "Total Pores": total_05_15 + total_15_30 + total_30_75 + total_75,
+            "Total Oxides": total_AlO_05_15 + total_AlO_15_30 + total_AlO_30_75 + total_AlO_75,
+            "Total Others": total_other_count
         })
 
-    # --- DISPLAY & PLOT ---
     if result_data:
         summary_df = pd.DataFrame(result_data)
-        
-        st.write("### Data Summary Table")
+        st.write("### Analysis Results")
         st.dataframe(summary_df)
-
+        
         st.write("### Inclusion Comparison Graph")
-        # Set 'File name' as index so the chart groups by file automatically
-        chart_df = summary_df.set_index("File name")
-        st.bar_chart(chart_df)
-
-        # Optional: Download Button
-        csv_data = summary_df.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download Summary CSV",
-            data=csv_data,
-            file_name='enlab_summary.csv',
-            mime='text/csv',
-        )
+        st.bar_chart(summary_df.set_index("File name"))
 else:
-    st.info("Waiting for files to be uploaded...")
+    st.info("Upload your Aspex data files to begin.")
