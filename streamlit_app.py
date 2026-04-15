@@ -118,5 +118,5 @@ with tab1:
     run_ui(files1, "Aspex")
 
 with tab2:
-    files2 = st.file_uploader("Upload Phenom/Phantom files", type=["csv"], accept_multiple_files=True, key="u2")
+    files2 = st.file_uploader("Upload Phenom/Phantom files", type=["csv", "pxz"], accept_multiple_files=True, key="u2")
     run_ui(files2, "Phenom-Phantom")
