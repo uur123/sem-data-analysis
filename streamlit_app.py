@@ -27,7 +27,7 @@ def process_data(df, instrument_type):
     else:
         # Phenom Mapping based on your provided list
         size_col = 'DAve' # Column index 9
-        class_col = 'Type(4ET)' # Column index 38
+        class_col = 'Classification' # Column index 18
         mapping = {
             0: 'Pore via cps', 1: '{Unclassified}', 2: 'NaCl 10', 3: 'CuSi 10', 
             4: 'Cu 10', 5: 'Al50Mn5', 6: 'AL50Fe5', 7: 'Al50Cu5', 8: 'Al50Si5', 
