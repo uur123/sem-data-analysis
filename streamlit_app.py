@@ -2,96 +2,76 @@ import streamlit as st
 import pandas as pd
 import io
 
-# --- PAGE CONFIG ---
-st.set_page_config(page_title="ENLab Multi-Instrument Analysis", layout="wide")
-st.header("ENLab Inclusion Analysis Report")
-
-tab1, tab2 = st.tabs(["Aspex Instrument", "Phenom/Phantom Instrument"])
-
 def process_data(df, instrument_type):
-    """Processes dataframe based on instrument-specific column mapping"""
+    # Physical Indexing based on your raw text evaluation:
+    # Column 12 (Index 11) = DAVE
+    # Column 40 (Index 39) = PSEM_CLASS
     
-    # 1. DEFINE COLUMNS AND MAPPING
     if instrument_type == "Aspex":
-        size_col = 'DAVE'
-        class_col = 'PSEM_CLASS'
+        size_idx = 9   # Standard Aspex DAVE position
+        class_idx = 37 # Standard Aspex PSEM_CLASS position
         mapping = {
-            10: 'Al 75', 7: 'Al 50 Si 5',
-            5: 'Al 50 Fe 5', 9: 'Al 50 Oth 5', 6: 'Al 50 Cu 5', 4: 'Al 50 Mn 5',
-            11: 'MgO 10', 1: 'NaCl 10', 2: 'Cu Si 10', 8: 'Si Mn Fe 10', 3: 'Cu 10',
-            0: '{Unclassified}', 12: '{Unclassified}'
+            10: 'Al 75', 7: 'Al 50 Si 5', 5: 'Al 50 Fe 5', 9: 'Al 50 Oth 5', 
+            6: 'Al 50 Cu 5', 4: 'Al 50 Mn 5', 11: 'MgO 10', 1: 'NaCl 10', 
+            2: 'Cu Si 10', 8: 'Si Mn Fe 10', 3: 'Cu 10', 0: '{Unclassified}', 12: '{Unclassified}'
         }
-        pore_classes = ['Al 75', 'Al 50 Si 5']
-        oxide_classes = ['Al 50 Fe 5', 'Al 50 Oth 5', 'Al 50 Cu 5', 'Al 50 Mn 5']
-        other_classes = ['MgO 10', 'NaCl 10', 'Cu Si 10', 'Si Mn Fe 10', 'Cu 10']
     else:
-        # Phenom Mapping based on your provided list
-        size_col = 'DAVE' # Column index 9
-        class_col = 'PSEM_CLASS' # Column index 18
+        # Perception/Phenom mapping from your helper file
+        size_idx = 11  # The 12th value (5.82 in Row 1)
+        class_idx = 39 # The 40th value (8 in Row 1)
         mapping = {
             0: 'Pore via cps', 1: '{Unclassified}', 2: 'NaCl 10', 3: 'CuSi 10', 
             4: 'Cu 10', 5: 'Al50Mn5', 6: 'AL50Fe5', 7: 'Al50Cu5', 8: 'Al50Si5', 
             9: 'SiMnFe10', 10: 'Al50 Oth5', 11: 'Al75', 12: 'MgO10', 13: 'True'
         }
-        pore_classes = ['Pore via cps', 'Al75', 'Al50Si5']
-        oxide_classes = ['AL50Fe5', 'Al50 Oth5', 'Al50Cu5', 'Al50Mn5']
-        other_classes = ['MgO10', 'NaCl 10', 'CuSi 10', 'SiMnFe10', 'Cu 10']
 
-    # 2. APPLY MAPPING
-    df[class_col] = pd.to_numeric(df[class_col], errors='coerce').fillna(1).astype(int)
-    df['Mapped_Class'] = df[class_col].map(mapping)
+    # Extract columns by index to avoid naming errors
+    df['size_vals'] = pd.to_numeric(df.iloc[:, size_idx], errors='coerce')
+    df['class_codes'] = pd.to_numeric(df.iloc[:, class_idx], errors='coerce').fillna(1).astype(int)
+    
+    # Map codes to names and clean for grouping
+    df['Mapped_Name'] = df['class_codes'].map(mapping).str.replace(" ", "").str.lower()
 
-    def get_metrics(data, classes):
-        sub = data[data['Mapped_Class'].isin(classes)]
-        sizes = pd.to_numeric(sub[size_col], errors='coerce')
-        m5_15 = len(sub[sizes.between(5, 14.99)])
-        m15_30 = len(sub[sizes.between(15, 29.99)])
-        m30_75 = len(sub[sizes.between(30, 74.99)])
-        m75 = len(sub[sizes >= 75])
-        return [m5_15 + m15_30 + m30_75 + m75, m5_15, m15_30, m30_75, m75]
+    # Define Categories (Lowercase, No Spaces)
+    pores = ['poreviacps', 'al75', 'al50si5']
+    oxides = ['al50fe5', 'al50oth5', 'al50cu5', 'al50mn5']
+    others = ['mgo10', 'nacl10', 'cusi10', 'simnfe10', 'cu10']
 
-    return get_metrics(df, pore_classes) + get_metrics(df, oxide_classes) + get_metrics(df, other_classes)
+    def get_metrics(data, target_classes):
+        sub = data[data['Mapped_Name'].isin(target_classes)]
+        s = sub['size_vals']
+        return [
+            len(sub), 
+            len(sub[s.between(5, 14.99)]), 
+            len(sub[s.between(15, 29.99)]), 
+            len(sub[s.between(30, 74.99)]), 
+            len(sub[s >= 75])
+        ]
+
+    return get_metrics(df, pores) + get_metrics(df, oxides) + get_metrics(df, others)
 
 def run_ui(uploaded_files, instrument_type):
     if not uploaded_files:
-        st.info(f"Please upload {instrument_type} files.")
+        st.info(f"Upload {instrument_type} files.")
         return
-
-    # Column Definitions
-    aspex_fields = [
-        'PART#', 'FIELD#', 'MAGFIELD#', 'X_ABS', 'Y_ABS', 'X_CG', 'Y_CG', 'X_FERET','Y_FERET', 
-        'DAVE', 'DMAX', 'DMIN', 'DPERP', 'ASPECT', 'AREA', 'PERIMETER','ORIENTATION', 'MAG', 
-        'MAG_INDEX', 'ACTION', 'FIRST_ELEM', 'SECOND_ELEM', 'THIRD_ELEM', 'FOURTH_ELEM', 
-        'FIRST_CONC', 'SECOND_CONC', 'THIRD_CONC', 'FOURTH_CONC', 'FIRST_PCT', 'SECOND_PCT', 
-        'THIRD_PCT', 'FOURTH_PCT', 'VIDEO', 'LIVE_TIME', 'COUNTS', 'TYPE(4ET)#', 'DENSITY', 
-        'PSEM_CLASS', 'F', 'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'K', 'Ca', 'Mn', 'Fe', 'Ni', 'Cu'
-    ]
-    
-    # Phenom mapping based on your raw data snippet
-    phenom_fields = [
-        "PART#", "FIELD#", "MAGFIELD#", "X_ABS", "Y_ABS", "X_DAC", "Y_DAC", "X_CG", "Y_CG",
-        "X_FERET", "Y_FERET", "DAVE", "DMAX", "DMIN", "DPERP", "ASPECT", "AREA", "PERIMETER",
-        "ORIENTATION", "MAG", "MAG_INDEX", "ACTION", "FIRST_ELEM", "SECOND_ELEM", "THIRD_ELEM",
-        "FOURTH_ELEM", "FIRST_CONC", "SECOND_CONC", "THIRD_CONC", "FOURTH_CONC", "FIRST_PCT",
-        "SECOND_PCT", "THIRD_PCT", "FOURTH_PCT", "VIDEO", "LIVE_TIME", "COUNTS", "TYPE(4ET)#",
-        "DENSITY", "PSEM_CLASS", "VOID_AREA", "VOID_COUNT", "EDGE_ROUGHNESS", "ROUNDNESS",
-        "FORMFACTOR", "ECD", "HULL_AREA", "HULL_PERIM", "FERETMAX", "HARDNESS", "CONDUCTIVITY",
-        "F", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "K", "Ca", "Mn", "Fe", "Ni", "Cu"
-    ]
 
     report_dict = {}
     for file in uploaded_files:
         try:
-            if instrument_type == "Aspex":
-                df = pd.read_csv(file, names=aspex_fields, header=None, sep=r"\s+", engine='python')
-            else:
-                # Phenom raw pxz data is tab-separated (\t)
-                df = pd.read_csv(file, names=phenom_fields, header=None, sep=None, engine='python')
+            # Perception files use tabs; sep=None with python engine handles it best
+            df = pd.read_csv(file, header=None, sep=None, engine='python')
             
+            # Show a success message if the count is 1741
+            if len(df) == 1741:
+                st.success(f"✅ {file.name}: Processed all 1741 particles.")
+            else:
+                st.warning(f"⚠️ {file.name}: Found {len(df)} particles.")
+                
             report_dict[file.name] = process_data(df, instrument_type)
         except Exception as e:
-            st.error(f"Error processing {file.name}: {e}")
+            st.error(f"Error on {file.name}: {e}")
 
+    # --- Table Layout ---
     row_names = [
         "Total pores", "Number of Pores (5 to 15um)", "Number of Pores (15 to 30um)", "Number of Pores (30 to 75um)", "Number of Pores (>75um)",
         "Total Oxides", "Oxides (5 to 15um)", "Oxides (15 to 30um)", "Oxides (30 to 75um)", "Oxides (>75um)",
@@ -100,7 +80,7 @@ def run_ui(uploaded_files, instrument_type):
     
     final_table = pd.DataFrame(report_dict, index=row_names)
     st.table(final_table)
-
+    
     # Download
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
