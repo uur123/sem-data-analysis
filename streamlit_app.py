@@ -26,7 +26,7 @@ def process_data(df, instrument_type):
         other_classes = ['MgO 10', 'NaCl 10', 'Cu Si 10', 'Si Mn Fe 10', 'Cu 10']
     else:
         # Phenom Mapping based on your provided list
-        size_col = 'DAve' # Column index 9
+        size_col = 'DAVE' # Column index 9
         class_col = 'PSEM_CLASS' # Column index 18
         mapping = {
             0: 'Pore via cps', 1: '{Unclassified}', 2: 'NaCl 10', 3: 'CuSi 10', 
@@ -69,11 +69,14 @@ def run_ui(uploaded_files, instrument_type):
     
     # Phenom mapping based on your raw data snippet
     phenom_fields = [
-        "Part#", "Field#", "SubField#", "X_Stage", "Y_Stage", "X_Pixel", "Y_Pixel", "Width", "Height", 
-        "DAve", "DMax", "DMin", "DPerp", "Aspect", "Area", "Perimeter", "Orientation", "Mag", "Density",
-        "HV", "Cond", "PAction", "VoidA", "VoidC", "Rough", "Rms", "Round", "Form", "ECD", "Skel", 
-        "HullA", "HullP", "E1", "E2", "E3", "E4", "LiveT", "Counts", "Type(4ET)", "Al", "Si", "Fe", "Cu"
-        # ... remaining columns will be handled by pandas automatically
+        "PART#", "FIELD#", "MAGFIELD#", "X_ABS", "Y_ABS", "X_DAC", "Y_DAC", "X_CG", "Y_CG",
+        "X_FERET", "Y_FERET", "DAVE", "DMAX", "DMIN", "DPERP", "ASPECT", "AREA", "PERIMETER",
+        "ORIENTATION", "MAG", "MAG_INDEX", "ACTION", "FIRST_ELEM", "SECOND_ELEM", "THIRD_ELEM",
+        "FOURTH_ELEM", "FIRST_CONC", "SECOND_CONC", "THIRD_CONC", "FOURTH_CONC", "FIRST_PCT",
+        "SECOND_PCT", "THIRD_PCT", "FOURTH_PCT", "VIDEO", "LIVE_TIME", "COUNTS", "TYPE(4ET)#",
+        "DENSITY", "PSEM_CLASS", "VOID_AREA", "VOID_COUNT", "EDGE_ROUGHNESS", "ROUNDNESS",
+        "FORMFACTOR", "ECD", "HULL_AREA", "HULL_PERIM", "FERETMAX", "HARDNESS", "CONDUCTIVITY",
+        "F", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "K", "Ca", "Mn", "Fe", "Ni", "Cu"
     ]
 
     report_dict = {}
